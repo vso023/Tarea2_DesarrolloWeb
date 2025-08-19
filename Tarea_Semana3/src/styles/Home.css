@@ -1,31 +1,27 @@
-.parallax {
-    background-image: url("https://images.unsplash.com/photo-1511379938547-c1f69419868d");
-    height: 100vh;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+.home-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.overlay {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 40px;
-    border-radius: 10px;
-    text-align: center;
-    color: white;
-    max-width: 700px;
+.featured {
+  width: 100%;
+  margin-top: 2.5rem;
+  text-align: center;
 }
 
-.overlay h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
+.featured h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: white;
 }
 
-.overlay p {
-    font-size: 1.2rem;
-    line-height: 1.5;
+.featured p {
+  font-size: 1rem;
+  color: #898686;
+  margin-bottom: 1.5rem;
 }

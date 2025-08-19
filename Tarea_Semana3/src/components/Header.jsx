@@ -1,30 +1,16 @@
 import "../styles/Header.css";
-import logo from "../images/logo.png";
 
 function Header() {
     return (
-        <header className="header">
-            <div className="logo">
-                <img src={logo} alt="Logo" />
-                <h1>KnowYourTunes</h1>
+        <section className="parallax">
+            <div className="overlay">
+                <h1>Bienvenido a KnowYourTunes</h1>
+                <p>
+                    Explora canciones, álbumes y artistas de todo el mundo.  
+                    Tu biblioteca musical personalizada te espera.
+                </p>
             </div>
-
-            <nav className="nav">
-                <ul>
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Canciones</a></li>
-                    <li><a href="#">Álbumes</a></li>
-                    <li><a href="#">Artistas</a></li>
-                </ul>
-            </nav>
-
-            <div className="user-profile">
-                <img 
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
-                    alt="Usuario"
-                />
-            </div>
-        </header>
+        </section>
     );
 }
 

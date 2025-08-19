@@ -1,16 +1,17 @@
 import "../styles/Home.css";
-
+import Cards from "./Cards";
+import AboutYou from "./AboutYou";
 function Home() {
     return (
-        <section className="parallax">
-            <div className="overlay">
-                <h1>Bienvenido a KnowYourTunes</h1>
-                <p>
-                    Explora canciones, álbumes y artistas de todo el mundo.  
-                    Tu biblioteca musical personalizada te espera.
-                </p>
-            </div>
-        </section>
+        <main className="home-content">
+            
+            <AboutYou />
+            <section className="featured">
+                <h2>Recomendados para ti</h2>
+                <p>Descubre nuevos artistas y álbumes seleccionados especialmente.</p>
+                <Cards />
+            </section>
+        </main>
     );
 }
 
