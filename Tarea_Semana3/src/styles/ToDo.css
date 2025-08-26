@@ -1,0 +1,77 @@
+.canciones_por_escuchar {
+    background: rgba(9, 10, 10, 0.5);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    max-width: 600px;
+    margin: 50px auto;
+    font-family: sans-serif;
+}
+
+.form_canciones {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form_canciones input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+}
+
+.form_canciones button {
+    background-color: #10747d;
+    color: white;
+    border: 1px solid #0d1117;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form_canciones button:hover {
+    background-color: #0d1117;
+    border-color: #10747d;
+}
+
+.pendientes button {
+    background-color: #10747d;
+    color: white;
+    border: 1px solid #0d1117;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 20px;
+}
+.pendientes button:hover {
+    background-color: #0d1117;
+} 
+
+.songs-map {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    gap: 10px; 
+}
+
+.lista-tarea button {
+    background-color: #10747d;
+    color: white;
+    border: 1px solid #0d1117;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.lista-tarea button:hover {
+    background-color: #0d1117;
+    border-color: #10747d;
+}

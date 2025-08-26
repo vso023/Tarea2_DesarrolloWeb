@@ -1,6 +1,6 @@
 .footer {
-    background: #111;
-    color: white;
+    background: var(--footer-bg);
+    color: var(--text-color);
     padding: 20px 40px;
     text-align: center;
 }
@@ -15,11 +15,11 @@
 .footer-logo h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: #10747d;
+    color: var(--accent-color);
 }
 
 .footer-copy {
     font-size: 0.85rem;
-    color: #666;
+    color: var(--muted-text);
     margin-top: 15px;
 }

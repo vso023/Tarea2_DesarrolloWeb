@@ -19,7 +19,7 @@ export default function LogIn({ onLogin }) {
         }
         const datos = JSON.parse(localStorage.getItem("usuario") || "null");
         if (datos && datos.usuario === usuario && datos.clave === clave) {
-            localStorage.setItem("Sesión", "activa");
+            localStorage.setItem("sesion", "activa");
             setMensaje("Bienvenido al sitio web " + usuario);
             onLogin?.();
         } else {

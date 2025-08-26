@@ -1,11 +1,27 @@
-
 .home-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;     
+  max-width: 100%;  
+  margin: 0;       
+  background-color: var(--bg-color); 
+  color: var(--text-color);
+}
+
+
+.sections-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.sections-container > * {
+  flex: 1;
+  min-width: 300px;
 }
 
 .featured {
@@ -17,11 +33,11 @@
 .featured h2 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: white;
+  color: var(--text-color);
 }
 
 .featured p {
   font-size: 1rem;
-  color: #898686;
+  color: var(--muted-text);
   margin-bottom: 1.5rem;
 }

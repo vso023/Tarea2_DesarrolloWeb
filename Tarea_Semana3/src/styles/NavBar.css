@@ -2,9 +2,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #0d1117;
+    flex-wrap: wrap;
+    background-color: var(--navbar-bg);
     padding: 10px 20px;
-    color: white;
+    color: var(--text-color);
 }
 
 .logo {
@@ -26,18 +27,32 @@
 
 .menu a {
     text-decoration: none;
-    color: white;
+    color: var(--text-color);
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .menu a:hover {
-    color: #10747d;
+    color: var(--accent-color);
 }
+
 .usuario-container {
     display: flex;
     align-items: center;
     gap: 10px; 
+}
+.usuario-container button {
+    background-color: var(--navbar-bg);
+    border: 2px solid var(--navbar-bg);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.usuario-container button:hover {
+    border-color: var(--accent-color);
 }
 .user-profile img {
     width: 40px;
@@ -53,13 +68,15 @@
 }
 
 .usuario button {
-    background-color: #0d1117;
-    border: 2px solid #0d1117;
+    background-color: var(--navbar-bg);
+    border: 2px solid var(--navbar-bg);
+    color: var(--text-color);
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .usuario button:hover {
-    border-color: #10747d;
+    border-color: var(--accent-color);
 }
