@@ -2,12 +2,12 @@ import "../styles/Home.css";
 import Cards from "./Cards";
 import AboutYou from "./AboutYou";
 import ToDo from "./ToDo";
-function Home({user}) {
+function Home({user, allSongs, onSongsChange}) {
     return (
         <main className="home-content">
             <div className="sections-container">
             <AboutYou />
-            <ToDo user={user}/>
+            <ToDo user={user} useGlobalStorage={true} allSongs={allSongs} onSongsChange={onSongsChange}/>
             </div>
             <section className="featured">
                 <h2>Recomendados para ti</h2>

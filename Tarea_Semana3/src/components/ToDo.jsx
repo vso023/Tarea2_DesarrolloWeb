@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import "../styles/ToDo.css";
 
-export default function ToDo({ user, useGlobalStorage = true }) {
+export default function ToDo({ user, useGlobalStorage = true, onSongsChange }) {
     const storageKey = useMemo(
         () => useGlobalStorage ? "songs_global" : `songs_${user?.usuario || "anon"}`,
         [user, useGlobalStorage]
@@ -10,8 +10,11 @@ export default function ToDo({ user, useGlobalStorage = true }) {
     const [songs, setSongs] = useState([]);
     const [texto, setTexto] = useState("");
     const [load, setLoad] = useState(false);
+    const [filter, setFilter] = useState("all");
+    const [editingId, setEditingId] = useState(null);
+    const [editText, setEditText] = useState("");
 
-    // 🔹 Cargar canciones al iniciar
+    // Cargar canciones al iniciar
     useEffect(() => {
         const saved = localStorage.getItem(storageKey);
         setLoad(true);
@@ -20,7 +23,7 @@ export default function ToDo({ user, useGlobalStorage = true }) {
         }
     }, [storageKey]);
 
-    // 🔹 Guardar canciones cuando cambien
+    // Guardar canciones cuando cambien
     useEffect(() => {
         if (load) {
             localStorage.setItem(storageKey, JSON.stringify(songs));
@@ -32,33 +35,82 @@ export default function ToDo({ user, useGlobalStorage = true }) {
         const txt = texto.trim();
         if (!txt) return;
 
-        setSongs(prev => [
-            ...prev,
-            { id: crypto.randomUUID(), text: txt, done: false, ts: Date.now() }
-        ]);
+        const nuevaCancion = {
+            id: crypto.randomUUID(),
+            titulo: txt,
+            done: false,
+            ts: Date.now(),
+            usuario: user?.usuario || "anon",
+        };
+        const updatedSongs = [...songs, nuevaCancion];
+        setSongs(updatedSongs);
+        if (useGlobalStorage && onSongsChange) {
+            onSongsChange(updatedSongs);
+        }
         setTexto("");
     };
 
     const toogleToDo = (id) => {
-        setSongs(prev => prev.map(it => it.id === id ? { ...it, done: !it.done } : it));
+        const updatedSongs = songs.map(it => it.id === id ? { ...it, done: !it.done } : it);
+        setSongs(updatedSongs);
+        if (useGlobalStorage && onSongsChange) {
+            onSongsChange(updatedSongs);
+        }
     };
 
     const removeToDo = (id) => {
-        setSongs(prev => prev.filter(it => it.id !== id));
+        const updatedSongs = songs.filter(it => it.id !== id);
+        setSongs(updatedSongs);
+        if (useGlobalStorage && onSongsChange) {
+            onSongsChange(updatedSongs);
+        }
     };
 
     const clearCompleted = () => {
-        setSongs(prev => prev.filter(it => !it.done));
+        const updatedSongs = songs.filter(it => !it.done);
+        setSongs(updatedSongs);
+        if (useGlobalStorage && onSongsChange) {
+            onSongsChange(updatedSongs);
+        }
     };
 
-    const pending = songs.filter(i => !i.done).length;
 
+    const filterSongs = (e) => {
+        setFilter(e.target.value);
+    };
+
+    let filteredSongs;
+    if (filter === "pending") {
+        filteredSongs = songs.filter(i => !i.done);
+    } else if (filter === "listened") {
+        filteredSongs = songs.filter(i => i.done);
+    } else {
+        filteredSongs = songs;
+    }
+
+    const startEditing = (song) => {
+        setEditingId(song.id);
+        setEditText(song.titulo);
+    };
+    const saveEdit = (id) => {
+        const updatedSongs = songs.map(song => (song.id === id ? { ...song, titulo: editText } : song));
+        setSongs(updatedSongs);
+        if (useGlobalStorage && onSongsChange) {
+            onSongsChange(updatedSongs);
+        }
+        setEditingId(null);
+    };
     return (
         <section className="canciones_por_escuchar">
             <h2>Canciones por escuchar</h2>
             <p>Añade las canciones que descubras y quieras escuchar</p>
 
-            <form className="form_canciones" onSubmit={addToDo} style={{ display: "flex", gap: "0.5rem" }}>
+            {/* Formulario */}
+            <form
+                className="form_canciones"
+                onSubmit={addToDo}
+                style={{ display: "flex", gap: "0.5rem" }}
+            >
                 <input
                     value={texto}
                     onChange={(e) => setTexto(e.target.value)}
@@ -68,29 +120,57 @@ export default function ToDo({ user, useGlobalStorage = true }) {
                 <button type="submit">Agregar canción</button>
             </form>
 
-            <ul className="lista-tarea">
-                {songs.length === 0 && <li>No hay canciones por escuchar</li>}
-                {songs.map(item => (
+            {/* Filtro */}
+            <div className="filtro_canciones" style={{ margin: "1rem 0" }}>
+                <label htmlFor="miSelect">Filtrar canciones: </label>
+                <select id="miSelect" value={filter} onChange={filterSongs}>
+                    <option value="all">Todas</option>
+                    <option value="pending">Pendientes</option>
+                    <option value="listened">Escuchadas</option>
+                </select>
+            </div>
+
+            {/* Lista */}
+            <ul className="lista-canciones">
+                {filteredSongs.length === 0 && <li>No hay canciones</li>}
+                {filteredSongs.map((item) => (
                     <li key={item.id} className="songs-map">
                         <input
                             type="checkbox"
                             checked={item.done}
                             onChange={() => toogleToDo(item.id)}
-                            aria-label={`Marcar "${item.text}"`}
+                            aria-label={`Marcar "${item.titulo}"`}
                         />
-                        <span className="text-checkbox">{item.text}</span>
-                        <button onClick={() => removeToDo(item.id)} aria-label="Eliminar">
+
+                        {editingId === item.id ? (
+                            <input
+                                type="text"
+                                value={editText}
+                                onChange={(e) => setEditText(e.target.value)}
+                                onBlur={() => saveEdit(item.id)}
+                                onKeyDown={(e) => e.key === "Enter" && saveEdit(item.id)}
+                                autoFocus
+                            />
+                        ) : (
+                            <span
+                                className="text-checkbox"
+                                onDoubleClick={() => startEditing(item)}
+                            >
+                                {item.titulo}
+                            </span>
+                        )}
+
+                        <button className="delete-song" onClick={() => removeToDo(item.id)} aria-label="Eliminar">
                             🗑
                         </button>
                     </li>
                 ))}
             </ul>
 
-            <div className="pendientes">
-                <span>Pendientes: </span>
-                <span>{pending}</span>
-                <button onClick={clearCompleted}>Borrar escuchadas</button>
-            </div>
+            {/* Botón borrar completadas */}
+            <button className="delete" onClick={clearCompleted} style={{ marginTop: "1rem" }}>
+                Borrar escuchadas
+            </button>
         </section>
     );
 }

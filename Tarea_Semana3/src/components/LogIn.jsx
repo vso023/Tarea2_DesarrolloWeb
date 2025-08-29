@@ -3,6 +3,7 @@ import "../styles/LogIn.css";
 
 export default function LogIn({ onLogin }) {
     const [usuario, setUsuario] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
     const [clave, setClave] = useState("");
     const [mensaje, setMensaje] = useState("");
     const [registrando, setRegistrando] = useState("");
@@ -10,18 +11,27 @@ export default function LogIn({ onLogin }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Registrar usuario nuevo
+         let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
         if (registrando) {
-            localStorage.setItem("usuario", JSON.stringify({ usuario, clave }));
+            if (usuarios.find(u => u.usuario === usuario)) {
+                setMensaje("El usuario ya existe. Elija otro nombre.");
+                return;
+            }
+            const nuevoUsuario = { usuario, clave, isAdmin };
+            usuarios.push(nuevoUsuario);
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+            localStorage.setItem("usuario", JSON.stringify({ usuario, clave, isAdmin }));
             setMensaje("Usuario registrado. Ya puede iniciar sesión");
             setRegistrando(false);
             setClave("");
             return;
         }
-        const datos = JSON.parse(localStorage.getItem("usuario") || "null");
-        if (datos && datos.usuario === usuario && datos.clave === clave) {
+        const datos = usuarios.find(u => u.usuario === usuario && u.clave === clave);
+        if (datos) {
             localStorage.setItem("sesion", "activa");
+            localStorage.setItem("usuario_actual", JSON.stringify(datos));
             setMensaje("Bienvenido al sitio web " + usuario);
-            onLogin?.();
+            onLogin?.(datos); // se pasa el usuario logueado a App
         } else {
             setMensaje("Usuario o contraseña incorrecta");
         }
@@ -50,6 +60,19 @@ export default function LogIn({ onLogin }) {
                             required
                         />
                     </div>
+                    {registrando && (
+                        <div style={{ margin: "0.5rem 0" }}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={isAdmin}
+                                    onChange={(e) => setIsAdmin(e.target.checked)}
+                                />
+                                Rol de administrador
+                            </label>
+                        </div>
+                    )}
+
                     <button type="submit" className="login-btn">
                         {registrando ? "Registrar" : "Iniciar sesión"}
                     </button>
